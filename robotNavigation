@@ -1,0 +1,45 @@
+import java.util.Scanner;
+
+public class RobotNavigation {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int gridX = scanner.nextInt();
+        int gridY = scanner.nextInt();
+
+        int robotX = scanner.nextInt();
+        int robotY = scanner.nextInt();
+        char orientation = scanner.next().charAt(0);
+
+        String instructions = scanner.next();
+
+        char[] directions = {'N', 'E', 'S', 'W'};
+
+        for (char command : instructions.toCharArray()) {
+            if (command == 'L') {
+                orientation = directions[(findDirectionIndex(orientation, directions) + 3) % 4];
+            } else if (command == 'R') {
+                orientation = directions[(findDirectionIndex(orientation, directions) + 1) % 4];
+            } else if (command == 'M') {
+                if (orientation == 'N' && robotY < gridY) robotY++;
+                else if (orientation == 'E' && robotX < gridX) robotX++;
+                else if (orientation == 'S' && robotY > 0) robotY--;
+                else if (orientation == 'W' && robotX > 0) robotX--;
+            }
+        }
+
+        System.out.println(robotX + " " + robotY + " " + orientation);
+
+        scanner.close();
+    }
+
+    private static int findDirectionIndex(char orientation, char[] directions) {
+        for (int i = 0; i < directions.length; i++) {
+            if (directions[i] == orientation) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
